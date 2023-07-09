@@ -10,6 +10,7 @@ interface FilterState {
   users: any[];
   isLoading: boolean;
   isInitital: boolean;
+  selectedAge: string[];
 }
 
 export default FilterState;

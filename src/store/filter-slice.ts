@@ -13,6 +13,7 @@ const initialState = {
   users: [],
   isLoading: false,
   isInitital: true,
+  selectedAge: [],
 };
 
 const filtersSlice = createSlice({
