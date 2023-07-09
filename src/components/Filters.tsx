@@ -29,6 +29,7 @@ const Filter: React.FC = () => {
     dispatch(filtersActions.clear());
   };
 
+  
   const renderFilters = () => {
     return state.selectedFilters.map((filter, index) => {
       switch (filter) {

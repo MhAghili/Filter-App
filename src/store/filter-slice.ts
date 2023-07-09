@@ -13,7 +13,7 @@ const initialState = {
   users: [],
   isLoading: false,
   isInitital: true,
-  selectedAge: [],
+  selectedAge: ["exact"],
 };
 
 const filtersSlice = createSlice({
@@ -86,10 +86,18 @@ const filtersSlice = createSlice({
     setIsInitial(state, action) {
       state.isInitital = action.payload;
     },
+    setSelectedAge(state, action) {
+      if (!state.selectedAge.includes(action.payload)) {
+        state.selectedAge.push(action.payload);
+      }
+    },
+    removeSelectedAge(state, action) {
+      state.selectedAge = state.selectedAge.filter(
+        (item) => item !== action.payload
+      );
+    },
   },
 });
-
-//az thunk natoonestam estefade konam har kari kardam erroresh hal nashod :(
 
 export const sendFilteredData = createAsyncThunk(
   "filters/sendFilteredData",
