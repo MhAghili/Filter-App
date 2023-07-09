@@ -13,9 +13,7 @@ const BetweenAgeChange: React.FC = () => {
     dispatch(filtersActions.setSelectedAge(event.target.value));
   };
 
-  const ageMethod = useSelector(
-    (state: { filters: FiltersBody }) => state.filters.selectedAge
-  );
+  const state = useSelector((state: { filters: FiltersBody }) => state.filters);
   const handleFromAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filtersActions.setAgeFrom(event.target.value));
   };
@@ -41,10 +39,13 @@ const BetweenAgeChange: React.FC = () => {
         value="between"
         onChange={handleAgeMethodChange}
       >
-        <option value="exact" disabled={ageMethod.includes("exact")}>
+        <option value="exact" disabled={state.selectedAge.includes("exact")}>
           Exact
         </option>
-        <option value="between" disabled={ageMethod.includes("between")}>
+        <option
+          value="between"
+          disabled={state.selectedAge.includes("between")}
+        >
           Between
         </option>
       </select>
@@ -53,12 +54,14 @@ const BetweenAgeChange: React.FC = () => {
         type="text"
         className="mt-2 topic form-control"
         placeholder="From"
+        value={state.ageFrom}
       />
       <input
         onChange={handleToAgeChange}
         type="text"
         className="mt-2 topic form-control"
         placeholder="To"
+        value={state.ageTo}
       />
     </FilterCard>
   );

@@ -7,9 +7,7 @@ import FiltersBody from "../Interfaces/FiltersBody";
 
 const ExactAge: React.FC = () => {
   const dispatch = useDispatch();
-  const ageMethod = useSelector(
-    (state: { filters: FiltersBody }) => state.filters.selectedAge
-  );
+  const state = useSelector((state: { filters: FiltersBody }) => state.filters);
   const handleAgeMethodChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -37,10 +35,13 @@ const ExactAge: React.FC = () => {
         value="exact"
         onChange={handleAgeMethodChange}
       >
-        <option value="exact" disabled={ageMethod.includes("exact")}>
+        <option value="exact" disabled={state.selectedAge.includes("exact")}>
           Exact
         </option>
-        <option value="between" disabled={ageMethod.includes("between")}>
+        <option
+          value="between"
+          disabled={state.selectedAge.includes("between")}
+        >
           Between
         </option>
       </select>
@@ -49,6 +50,7 @@ const ExactAge: React.FC = () => {
         type="text"
         className="mt-2 topic form-control"
         placeholder="Enter Age"
+        value={state.excatAge[0]}
       />
     </FilterCard>
   );

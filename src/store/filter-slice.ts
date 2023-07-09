@@ -68,11 +68,6 @@ const filtersSlice = createSlice({
       if (action.payload === "birthdate") {
         state.birthdayStr = "";
       }
-      if (action.payload === "age") {
-        state.excatAge = [];
-        state.ageFrom = "";
-        state.ageTo = "";
-      }
       if (action.payload === "interests") {
         state.intrested = [];
       }
@@ -95,6 +90,13 @@ const filtersSlice = createSlice({
       state.selectedAge = state.selectedAge.filter(
         (item) => item !== action.payload
       );
+      if (action.payload === "exact") {
+        state.excatAge = [];
+      }
+      if (action.payload === "between") {
+        state.ageFrom = "";
+        state.ageTo = "";
+      }
     },
   },
 });
