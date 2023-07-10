@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Card from "./components/Card";
 import Filter from "./components/Filters";
 import UsersContent from "./components/UsersContent";
-import react from "react";
 function App() {
   return (
     <Card>
