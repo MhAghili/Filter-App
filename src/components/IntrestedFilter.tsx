@@ -8,7 +8,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const InterestedFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const interests = ["sport", "playstation", "movie", "football"];
+  const interests = ["sport", "playstation", "movie", "book", "travel"];
   const handleInterestChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filtersActions.setInterested(event.target.value));
   };
