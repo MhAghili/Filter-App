@@ -54,7 +54,7 @@ const filtersSlice = createSlice({
       if (!state.selectedFilters.includes(action.payload)) {
         state.selectedFilters.push(action.payload);
       }
-    },
+    },  
     clear(state) {
       Object.assign(state, initialState);
     },
