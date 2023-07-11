@@ -11,6 +11,7 @@ interface FilterState {
   isLoading: boolean;
   isInitital: boolean;
   selectedAgeMethods: string[];
+  error: {isError: boolean; message: string};
 }
 
 export default FilterState;

@@ -14,6 +14,7 @@ const initialState = {
   isLoading: false,
   isInitital: true,
   selectedAgeMethods: ["exact"], // default value for selectedAgeMethods
+  error: { isError: false, message: "" },
 };
 
 const filtersSlice = createSlice({
@@ -98,6 +99,10 @@ const filtersSlice = createSlice({
         state.ageTo = "";
       }
     },
+    setError(state, action) {
+      state.error.isError = action.payload.isError;
+      state.error.message = action.payload.message;
+    },
   },
 });
 
@@ -119,6 +124,7 @@ export const showFiltredData = createAsyncThunk(
         interests: [...state.intrested],
       },
     };
+    thunkAPI.dispatch(filtersActions.setError({ isError: false, message: "" }));
     thunkAPI.dispatch(filtersActions.setIsLoading(true));
     try {
       const response = await fetch("http://localhost:5000/api/v1/search", {
@@ -135,8 +141,11 @@ export const showFiltredData = createAsyncThunk(
       const users = await response.json();
       thunkAPI.dispatch(filtersActions.setIsLoading(false));
       thunkAPI.dispatch(filtersActions.setUsers(users));
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      // console.log(err);
+      thunkAPI.dispatch(
+        filtersActions.setError({ isError: true, message: err.message })
+      );
       thunkAPI.dispatch(filtersActions.setIsLoading(false));
     }
   }
