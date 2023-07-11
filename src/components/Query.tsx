@@ -5,7 +5,7 @@ import FiltersBody from "../Interfaces/FiltersBody";
 
 const Query: React.FC = (props) => {
   const dispatch = useDispatch();
-  const queryHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const queryChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filtersActions.setQuery(event.target.value));
   };
 
@@ -18,7 +18,7 @@ const Query: React.FC = (props) => {
       <FilterCard>
         <label className="mb-1">Search</label>
         <input
-          onChange={queryHandler}
+          onChange={queryChangeHandler}
           type="text"
           className="mb-3 topic form-control rounded-5"
           value={query}

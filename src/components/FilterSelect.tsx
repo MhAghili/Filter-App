@@ -22,7 +22,7 @@ const FilterSelect: React.FC<{
               disabled={props.selectedFilters.includes(filter)}
               key={filter}
             >
-              {filter.charAt(0).toUpperCase() + filter.slice(1)}
+              {filter.charAt(0).toUpperCase() + filter.slice(1)} 
             </option>
           );
         })}

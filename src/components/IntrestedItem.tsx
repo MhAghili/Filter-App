@@ -11,7 +11,7 @@ const IntrestedItem: React.FC<{
         value={props.intrestedItem}
         onChange={props.onHandleChange}
       />
-      <label className="form-check-label" htmlFor="sport">
+      <label className="form-check-label" htmlFor={props.intrestedItem}>
         {props.intrestedItem}
       </label>
     </div>

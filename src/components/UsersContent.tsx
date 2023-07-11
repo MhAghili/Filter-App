@@ -4,6 +4,7 @@ import FiltersBody from "../Interfaces/FiltersBody";
 
 const UsersContent: React.FC = () => {
   const state = useSelector((state: { filters: FiltersBody }) => state.filters);
+  const tableRow = ["Name", "Family", "Age", "Intrested", "Birthday"];
   if (state.isInitital) {
     return <div className="fs-2">Search for users</div>;
   } else if (state.isLoading) {
@@ -16,11 +17,9 @@ const UsersContent: React.FC = () => {
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Family</th>
-              <th>Age</th>
-              <th>Intrested</th>
-              <th>Birthday</th>
+              {tableRow.map((name, i) => (
+                <th>{name}</th>
+              ))}
             </tr>
           </thead>
           <tbody>

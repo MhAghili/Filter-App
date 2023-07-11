@@ -11,13 +11,13 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const BirthdayPicker: React.FC = () => {
   const dispatch = useDispatch();
+  const birthdateStr = useSelector(
+    (state: { filters: FiltersBody }) => state.filters.birthday
+  );
   const handleBirthdateChange = (date: Date | null) => {
-    let dateStr = format(date!, "yyyy-MM-dd");
+    const dateStr = format(date!, "yyyy-MM-dd");
     dispatch(filtersActions.setBirthdate(dateStr));
   };
-  const birthdateStr = useSelector(
-    (state: { filters: FiltersBody }) => state.filters.birthdayStr
-  );
   return (
     <FilterCard>
       <label className="d-flex" htmlFor="birthdate">

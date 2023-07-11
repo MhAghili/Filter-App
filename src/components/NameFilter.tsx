@@ -6,7 +6,7 @@ import FilterCard from "./FilterCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const NameFilter: React.FC = (props) => {
+const NameFilter: React.FC = () => {
   const dispatch = useDispatch();
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filtersActions.setName(event.target.value));

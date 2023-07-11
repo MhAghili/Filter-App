@@ -11,7 +11,7 @@ const ExactAge: React.FC = () => {
   const handleAgeMethodChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    dispatch(filtersActions.setSelectedAge(event.target.value));
+    dispatch(filtersActions.setSelectedAgeMethod(event.target.value));
   };
   const handleExactAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filtersActions.setExactAge(event.target.value));
@@ -35,12 +35,15 @@ const ExactAge: React.FC = () => {
         value="exact"
         onChange={handleAgeMethodChange}
       >
-        <option value="exact" disabled={state.selectedAge.includes("exact")}>
+        <option
+          value="exact"
+          disabled={state.selectedAgeMethods.includes("exact")}
+        >
           Exact
         </option>
         <option
           value="between"
-          disabled={state.selectedAge.includes("between")}
+          disabled={state.selectedAgeMethods.includes("between")}
         >
           Between
         </option>

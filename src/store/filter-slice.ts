@@ -4,7 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   query: "",
   name: "",
-  birthdayStr: "",
+  birthday: "",
   excatAge: [],
   ageFrom: "",
   ageTo: "",
@@ -13,7 +13,7 @@ const initialState = {
   users: [],
   isLoading: false,
   isInitital: true,
-  selectedAge: ["exact"],
+  selectedAgeMethods: ["exact"], // default value for selectedAgeMethods
 };
 
 const filtersSlice = createSlice({
@@ -27,7 +27,7 @@ const filtersSlice = createSlice({
       state.name = action.payload;
     },
     setBirthdate(state, action) {
-      state.birthdayStr = action.payload;
+      state.birthday = action.payload;
     },
     setExactAge(state, action) {
       if (action.payload !== "") {
@@ -54,7 +54,7 @@ const filtersSlice = createSlice({
       if (!state.selectedFilters.includes(action.payload)) {
         state.selectedFilters.push(action.payload);
       }
-    },  
+    },
     clear(state) {
       Object.assign(state, initialState);
     },
@@ -63,13 +63,13 @@ const filtersSlice = createSlice({
         (item) => item !== action.payload
       );
       if (action.payload === "name") {
-        state.name = "";
+        state.name = ""; // clear name
       }
       if (action.payload === "birthdate") {
-        state.birthdayStr = "";
+        state.birthday = ""; // clear birthday
       }
       if (action.payload === "interests") {
-        state.intrested = [];
+        state.intrested = []; // clear interests
       }
     },
     setUsers(state, action) {
@@ -81,13 +81,13 @@ const filtersSlice = createSlice({
     setIsInitial(state, action) {
       state.isInitital = action.payload;
     },
-    setSelectedAge(state, action) {
-      if (!state.selectedAge.includes(action.payload)) {
-        state.selectedAge.push(action.payload);
+    setSelectedAgeMethod(state, action) {
+      if (!state.selectedAgeMethods.includes(action.payload)) {
+        state.selectedAgeMethods.push(action.payload);
       }
     },
     removeSelectedAge(state, action) {
-      state.selectedAge = state.selectedAge.filter(
+      state.selectedAgeMethods = state.selectedAgeMethods.filter(
         (item) => item !== action.payload
       );
       if (action.payload === "exact") {
@@ -101,9 +101,9 @@ const filtersSlice = createSlice({
   },
 });
 
-export const sendFilteredData = createAsyncThunk(
-  "filters/sendFilteredData",
-  async (arg, thunkAPI: any) => {
+export const showFiltredData = createAsyncThunk(
+  "filters/showFiltredData",
+  async (_, thunkAPI: any) => {
     const state = thunkAPI.getState().filters;
     const betweenage =
       state.ageFrom && state.ageTo
@@ -115,7 +115,7 @@ export const sendFilteredData = createAsyncThunk(
         exact_age: state.excatAge,
         range_age: betweenage,
         name: state.name,
-        birthdate: state.birthdayStr,
+        birthdate: state.birthday,
         interests: [...state.intrested],
       },
     };

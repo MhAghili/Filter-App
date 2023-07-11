@@ -5,9 +5,9 @@ const Button: React.FC<{
 }> = (props) => {
   return (
     <button
+      className={`btn btn-primary ${props.classes}`}
       onClick={props.btnHndlr}
       type="button"
-      className={`btn btn-primary ${props.classes}`}
     >
       {props.name}
     </button>

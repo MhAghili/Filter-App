@@ -9,13 +9,13 @@ import { filtersActions } from "../store/filter-slice";
 const AgeFilter: React.FC = () => {
   const dispatch = useDispatch();
   const ageMethod = useSelector(
-    (state: { filters: FiltersBody }) => state.filters.selectedAge
+    (state: { filters: FiltersBody }) => state.filters.selectedAgeMethods
   );
 
   useEffect(() => {
     if (ageMethod.length === 0) {
       dispatch(filtersActions.removeFilter("age"));
-      dispatch(filtersActions.setSelectedAge("exact")); // default
+      dispatch(filtersActions.setSelectedAgeMethod("exact")); // default
     }
   }, [ageMethod, dispatch]);
 

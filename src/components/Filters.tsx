@@ -9,7 +9,7 @@ import AgeFilter from "./AgeFilter";
 import Button from "./Button";
 import FilterSelect from "./FilterSelect";
 import Query from "./Query";
-import { sendFilteredData } from "../store/filter-slice";
+import { showFiltredData } from "../store/filter-slice";
 import { FilterDispatch } from "../store";
 
 const Filter: React.FC = () => {
@@ -22,7 +22,7 @@ const Filter: React.FC = () => {
 
   const SearchBtnHandler = () => {
     dispatch(filtersActions.setIsInitial(false));
-    dispatch(sendFilteredData());
+    dispatch(showFiltredData());
   };
 
   const ClearBtnHandler = () => {

@@ -1,7 +1,7 @@
 interface FilterState {
   query: string;
   name: string;
-  birthdayStr: string;
+  birthday: string;
   excatAge: number[];
   ageFrom: string;
   ageTo: string;
@@ -10,7 +10,7 @@ interface FilterState {
   users: any[];
   isLoading: boolean;
   isInitital: boolean;
-  selectedAge: string[];
+  selectedAgeMethods: string[];
 }
 
 export default FilterState;
