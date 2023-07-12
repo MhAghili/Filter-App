@@ -1,8 +1,10 @@
-const Button: React.FC<{
+type Prototype = {
   classes: string;
   name: string;
   btnHndlr: () => void;
-}> = (props) => {
+};
+
+const Button: React.FC<Prototype> = (props: Prototype) => {
   return (
     <button
       className={`btn btn-primary ${props.classes}`}

@@ -1,9 +1,11 @@
 import FilterCard from "../UI/FilterCard";
 
-const FilterSelect: React.FC<{
+type Prototype = {
   onHandleFilterChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   selectedFilters: string[];
-}> = (props) => {
+}
+
+const FilterSelect: React.FC<Prototype> = (props: Prototype) => {
   const filters = ["name", "interests", "birthdate", "age"];
   return (
     <FilterCard>
@@ -22,7 +24,7 @@ const FilterSelect: React.FC<{
               disabled={props.selectedFilters.includes(filter)}
               key={filter}
             >
-              {filter.charAt(0).toUpperCase() + filter.slice(1)} 
+              {filter.charAt(0).toUpperCase() + filter.slice(1)}
             </option>
           );
         })}

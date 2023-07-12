@@ -20,16 +20,15 @@ const Filter: React.FC = () => {
     dispatch(filtersActions.setSelectedFilters(event.target.value));
   };
 
-  const SearchBtnHandler = () => {
+  const searchBtnHandler = () => {
     dispatch(filtersActions.setIsInitial(false));
     dispatch(showFiltredData());
   };
 
-  const ClearBtnHandler = () => {
+  const clearBtnHandler = () => {
     dispatch(filtersActions.clear());
   };
 
-  
   const renderFilters = () => {
     return state.selectedFilters.map((filter, index) => {
       switch (filter) {
@@ -57,15 +56,11 @@ const Filter: React.FC = () => {
         {renderFilters()}
         <section className="mt-4">
           <Button
-            classes={"btn-primary me-3"}
-            name={"Search"}
-            btnHndlr={SearchBtnHandler}
+            classes="btn-primary me-3"
+            name="Search"
+            btnHndlr={searchBtnHandler}
           />
-          <Button
-            classes={"btn-light"}
-            name={"Clear"}
-            btnHndlr={ClearBtnHandler}
-          />
+          <Button classes="btn-light" name="Clear" btnHndlr={clearBtnHandler} />
         </section>
       </div>
     </>

@@ -1,3 +1,11 @@
+interface User {
+  name: string;
+  birth_date: string;
+  age: number;
+  interests: string[];
+  [key: string]: any; // baraye estefade be soorat dynamic
+}
+
 interface FilterState {
   query: string;
   name: string;
@@ -7,11 +15,11 @@ interface FilterState {
   ageTo: string;
   intrested: string[];
   selectedFilters: string[];
-  users: any[];
+  users: User[];
   isLoading: boolean;
   isInitital: boolean;
   selectedAgeMethods: string[];
-  error: {isError: boolean; message: string};
+  error: { isError: boolean; message: string };
 }
 
 export default FilterState;
