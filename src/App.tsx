@@ -1,8 +1,8 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Card from "./components/Card";
-import Filter from "./components/Filters";
-import UsersContent from "./components/UsersContent";
+import Card from "./components/UI/Card";
+import Filter from "./components/FilterItems/Filters";
+import UsersContent from "./components/Results/UsersContent";
 function App() {
   return (
     <Card>

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { filtersActions } from "../store/filter-slice";
-import FiltersBody from "../Interfaces/FiltersBody";
+import { filtersActions } from "../../store/filter-slice";
+import FiltersBody from "../../Interfaces/FiltersBody";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePickerfrom from "react-datepicker";
-import FilterCard from "./FilterCard";
+import FilterCard from "../UI/FilterCard";
 import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";

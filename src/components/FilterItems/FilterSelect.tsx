@@ -1,4 +1,4 @@
-import FilterCard from "./FilterCard";
+import FilterCard from "../UI/FilterCard";
 
 const FilterSelect: React.FC<{
   onHandleFilterChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;

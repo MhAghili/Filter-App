@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
-import { filtersActions } from "../store/filter-slice";
-import FiltersBody from "../Interfaces/FiltersBody";
+import { filtersActions } from "../../store/filter-slice";
+import FiltersBody from "../../Interfaces/FiltersBody";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NameFilter from "./NameFilter";
 import DateFilter from "./DateFilter";
 import InterestedFilter from "./IntrestedFilter";
 import AgeFilter from "./AgeFilter";
-import Button from "./Button";
+import Button from "../UI/Button";
 import FilterSelect from "./FilterSelect";
 import Query from "./Query";
-import { showFiltredData } from "../store/filter-slice";
-import { FilterDispatch } from "../store";
+import { showFiltredData } from "../../store/filter-slice";
+import { FilterDispatch } from "../../store";
 
 const Filter: React.FC = () => {
   const dispatch = useDispatch<FilterDispatch>();

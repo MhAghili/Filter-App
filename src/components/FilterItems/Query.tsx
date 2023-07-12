@@ -1,7 +1,7 @@
-import FilterCard from "./FilterCard";
+import FilterCard from "../UI/FilterCard";
 import { useDispatch, useSelector } from "react-redux";
-import { filtersActions } from "../store/filter-slice";
-import FiltersBody from "../Interfaces/FiltersBody";
+import { filtersActions } from "../../store/filter-slice";
+import FiltersBody from "../../Interfaces/FiltersBody";
 
 const Query: React.FC = (props) => {
   const dispatch = useDispatch();

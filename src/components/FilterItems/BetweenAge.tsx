@@ -1,9 +1,9 @@
-import FilterCard from "./FilterCard";
+import FilterCard from "../UI/FilterCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
-import { filtersActions } from "../store/filter-slice";
-import FiltersBody from "../Interfaces/FiltersBody";
+import { filtersActions } from "../../store/filter-slice";
+import FiltersBody from "../../Interfaces/FiltersBody";
 
 const BetweenAgeChange: React.FC = () => {
   const dispatch = useDispatch();

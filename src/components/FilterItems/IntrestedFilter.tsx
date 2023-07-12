@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
-import { filtersActions } from "../store/filter-slice";
+import { filtersActions } from "../../store/filter-slice";
 import "bootstrap/dist/css/bootstrap.min.css";
 import IntrestedItem from "./IntrestedItem";
-import FilterCard from "./FilterCard";
+import FilterCard from "../UI/FilterCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 

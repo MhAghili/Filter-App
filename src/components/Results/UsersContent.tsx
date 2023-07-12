@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import FiltersBody from "../Interfaces/FiltersBody";
-import Error from "./Error";
+import FiltersBody from "../../Interfaces/FiltersBody";
+import Error from "../UI/Error";
 
 const UsersContent: React.FC = () => {
   const state = useSelector((state: { filters: FiltersBody }) => state.filters);
