@@ -15,6 +15,5 @@ export const createBody = (filters: FilterState) => {
       interests: [...filters.interested],
     },
   };
-  console.log(body);
   return body;
 };
