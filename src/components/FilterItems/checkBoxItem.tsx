@@ -1,10 +1,10 @@
-type Prototype = {
+type PropTypes = {
   onHandleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   intrestedItem: string;
 };
 
 
-const checkBoxItem: React.FC<Prototype> = (props: Prototype) => {
+const checkBoxItem: React.FC<PropTypes> = (props: PropTypes) => {
   return (
     <div className="form-check ">
       <input

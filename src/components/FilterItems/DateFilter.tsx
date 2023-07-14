@@ -1,31 +1,30 @@
-import { useDispatch, useSelector } from "react-redux";
-import { filtersActions } from "../../store/filter-slice";
-import FiltersBody from "../../Interfaces/FiltersBody";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePickerfrom from "react-datepicker";
 import FilterCard from "../UI/FilterCard";
-import { format } from "date-fns";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const BirthdayPicker: React.FC = () => {
-  const dispatch = useDispatch();
-  const birthdateStr = useSelector(
-    (state: { filters: FiltersBody }) => state.filters.birthday
-  );
+type PropTypes = {
+  onRemoveFilter: (filter: string) => void;
+  method: string;
+  onSetDate: (value: Date | null) => void;
+  date: string;
+};
+
+const DateFilter: React.FC<PropTypes> = (props: PropTypes) => {
   const handleBirthdateChange = (date: Date | null) => {
-    const dateStr = format(date!, "yyyy-MM-dd");
-    dispatch(filtersActions.setBirthdate(dateStr));
+    props.onSetDate(date);
   };
   return (
     <FilterCard>
-      <label className="d-flex" htmlFor="birthdate">
+      <label className="d-flex" htmlFor={props.method}>
         <p>Birthdate</p>
         <div
           className="ms-auto"
           onClick={() => {
-            dispatch(filtersActions.removeFilter("birthdate"));
+            props.onRemoveFilter(props.method);
           }}
         >
           <FontAwesomeIcon icon={faTimes} />
@@ -34,14 +33,14 @@ const BirthdayPicker: React.FC = () => {
       <DatePickerfrom
         className="form-control"
         id="birthdate"
-        value={birthdateStr}
         onChange={handleBirthdateChange}
         dateFormat="yyyy-MM-dd"
         placeholderText="Select birthdate"
         locale="en"
+        value={props.date}
       />
     </FilterCard>
   );
 };
 
-export default BirthdayPicker;
+export default DateFilter;

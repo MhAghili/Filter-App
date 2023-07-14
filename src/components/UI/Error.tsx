@@ -1,10 +1,10 @@
 import React from "react";
 
-type Prototype = {
+type PropTypes = {
   message: string;
 };
 
-const Error: React.FC<Prototype> = (props: Prototype) => {
+const Error: React.FC<PropTypes> = (props: PropTypes) => {
   return (
     <div className="alert alert-danger" role="alert">
       {props.message}

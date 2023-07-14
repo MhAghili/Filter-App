@@ -1,21 +1,23 @@
+import React from "react";
 import FilterCard from "../UI/FilterCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
-import { filtersActions } from "../../store/filter-slice";
-import FiltersBody from "../../Interfaces/FiltersBody";
 
-const ExactAge: React.FC = () => {
-  const dispatch = useDispatch();
-  const state = useSelector((state: { filters: FiltersBody }) => state.filters);
+type PropTypes = {
+  onChangeAgeMethod: (method: string) => void;
+  onRemoveAgeMethod: (method: string) => void;
+  onSetExactAge: (value: string) => void;
+  ageMethod: string[];
+  exactAge: number[];
+};
+
+const ExactAge: React.FC<PropTypes> = (props: PropTypes) => {
   const handleAgeMethodChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    dispatch(filtersActions.setSelectedAgeMethod(event.target.value));
+    props.onChangeAgeMethod(event.target.value);
   };
-  const handleExactAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(filtersActions.setExactAge(event.target.value));
-  };
+
   return (
     <FilterCard>
       <label className="d-flex" htmlFor="filter">
@@ -23,7 +25,8 @@ const ExactAge: React.FC = () => {
         <div
           className="ms-auto"
           onClick={() => {
-            dispatch(filtersActions.removeSelectedAge("exact"));
+            props.onRemoveAgeMethod("exact");
+            props.onSetExactAge("");
           }}
         >
           <FontAwesomeIcon icon={faTimes} />
@@ -35,25 +38,19 @@ const ExactAge: React.FC = () => {
         value="exact"
         onChange={handleAgeMethodChange}
       >
-        <option
-          value="exact"
-          disabled={state.selectedAgeMethods.includes("exact")}
-        >
+        <option value="exact" disabled={props.ageMethod.includes("exact")}>
           Exact
         </option>
-        <option
-          value="between"
-          disabled={state.selectedAgeMethods.includes("between")}
-        >
+        <option value="between" disabled={props.ageMethod.includes("between")}>
           Between
         </option>
       </select>
       <input
-        onChange={handleExactAgeChange}
+        onChange={(event) => props.onSetExactAge(event.target.value)}
         type="text"
         className="mt-2 topic form-control"
         placeholder="Enter Age"
-        value={state.excatAge[0]}
+        value={props.exactAge[0] || ""}
       />
     </FilterCard>
   );

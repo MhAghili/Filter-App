@@ -1,57 +1,155 @@
-import { useDispatch, useSelector } from "react-redux";
-import { filtersActions } from "../../store/filter-slice";
-import FiltersBody from "../../Interfaces/FiltersBody";
+import { useState, useReducer, useCallback } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NameFilter from "./NameFilter";
+import StringFilter from "./StringFilter";
 import DateFilter from "./DateFilter";
-import InterestedFilter from "./IntrestedFilter";
+import InterestedFilter from "./InterestedFilter";
 import AgeFilter from "./AgeFilter";
 import Button from "../UI/Button";
 import FilterSelect from "./FilterSelect";
-import Query from "./Query";
-import { showFiltredData } from "../../store/filter-slice";
-import { FilterDispatch } from "../../store";
+import { initialFilterState, filterReducer } from "../../helpers/FilterReducer";
+import { createBody } from "../../helpers/CreatBody";
+import { User } from "./../../Interfaces/FiltersBody";
 
-const Filter: React.FC = () => {
-  const dispatch = useDispatch<FilterDispatch>();
-  const state = useSelector((state: { filters: FiltersBody }) => state.filters);
+type PropTypes = {
+  onSetUser: (users: User[]) => void;
+  onSetIsLoading: (value: boolean) => void;
+  onSetIsInitial: (value: boolean) => void;
+  onSetError: (value: { isError: boolean; message: string }) => void;
+  onClear: () => void;
+};
+
+const Filter: React.FC<PropTypes> = (props: PropTypes) => {
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+
+  const [filters, dispatch] = useReducer(filterReducer, initialFilterState);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(filtersActions.setSelectedFilters(event.target.value));
+    setSelectedFilters((prevState) => {
+      if (!prevState.includes(event.target.value)) {
+        return [...prevState, event.target.value];
+      } else return prevState;
+    });
   };
 
-  const searchBtnHandler = () => {
-    dispatch(filtersActions.setIsInitial(false));
-    dispatch(showFiltredData());
+  const removeFilter = useCallback((filter: string) => {
+    setSelectedFilters((prevState) => {
+      return prevState.filter((item) => item !== filter);
+    });
+    if (filter === "name") dispatch({ type: "name", value: "" });
+    if (filter === "birthday") dispatch({ type: "birthday", value: null });
+    if (filter === "interested") {
+      dispatch({ type: "interested", value: null });
+    }
+  }, []);
+
+  const searchBtnHandler = async () => {
+    props.onSetIsInitial(false);
+    const body = createBody(filters);
+    props.onSetError({ isError: false, message: "" });
+    props.onSetIsLoading(true);
+    try {
+      const response = await fetch("http://localhost:5000/api/v1/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const users = await response.json();
+      props.onSetIsLoading(false);
+      props.onSetUser(users);
+    } catch (err: any) {
+      props.onSetError({ isError: true, message: err.message });
+      props.onSetIsLoading(false);
+    }
   };
 
   const clearBtnHandler = () => {
-    dispatch(filtersActions.clear());
+    setSelectedFilters([]);
+    dispatch({ type: "clear", value: "" });
+    props.onClear();
   };
 
   const renderFilters = () => {
-    return state.selectedFilters.map((filter, index) => {
+    return selectedFilters.map((filter, index) => {
       switch (filter) {
         case "name":
-          return <NameFilter key={index} />;
-        case "birthdate":
-          return <DateFilter key={index} />;
-        case "interests":
-          return <InterestedFilter key={index} />;
+          return (
+            <StringFilter
+              method="name"
+              onRemoveFilter={removeFilter}
+              key={filter}
+              onSetString={(value) => {
+                dispatch({ type: "name", value: value });
+              }}
+              name={filters.name}
+            />
+          );
+        case "birthday":
+          return (
+            <DateFilter
+              onRemoveFilter={removeFilter}
+              key={filter}
+              method="birthday"
+              onSetDate={(value) => {
+                dispatch({ type: "birthday", value: value });
+              }}
+              date={filters.birthday}
+            />
+          );
+        case "interested":
+          return (
+            <InterestedFilter
+              onRemoveFilter={removeFilter}
+              onSetInterest={(value) => {
+                dispatch({ type: "interested", value: value });
+              }}
+              key={filter}
+            />
+          );
         case "age":
-          return <AgeFilter key={index} />;
+          return (
+            <AgeFilter
+              onRemoveFilter={removeFilter}
+              onSetExactAge={(value) => {
+                dispatch({ type: "ageExact", value: value });
+              }}
+              onSetAgeFrom={(value) => {
+                dispatch({ type: "ageFrom", value: value });
+              }}
+              onSetAgeTo={(value) => {
+                dispatch({ type: "ageTo", value: value });
+              }}
+              exactAge={filters.exactAge}
+              ageFrom={filters.ageFrom}
+              ageTo={filters.ageTo}
+              key={filter}
+            />
+          );
         default:
           return null;
       }
     });
   };
+
   return (
     <>
-      <Query />
+      <StringFilter
+        method="Search"
+        onRemoveFilter={() => {}} //dummy function
+        onSetString={(value) => {
+          dispatch({ type: "query", value: value });
+        }}
+        name={filters.query}
+      />
       <div className="container">
         <FilterSelect
           onHandleFilterChange={handleFilterChange}
-          selectedFilters={state.selectedFilters}
+          selectedFilters={selectedFilters}
         />
         {renderFilters()}
         <section className="mt-4">

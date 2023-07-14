@@ -1,26 +1,35 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import FiltersBody from "../../Interfaces/FiltersBody";
+import { User } from "../../Interfaces/FiltersBody";
 import Error from "../UI/Error";
 import ResultCard from "../UI/ResultCard";
 
-const SerchResult: React.FC = () => {
-  const state = useSelector((state: { filters: FiltersBody }) => state.filters);
+type PropTypes = {
+  users: User[];
+  isLoading: boolean;
+  isInitial: boolean;
+  error: { isError: boolean; message: string };
+};
+
+const SearchResult: React.FC<PropTypes> = ({
+  users,
+  isLoading,
+  isInitial,
+  error,
+}) => {
   const tableRow = ["name", "age", "interests", "birth_date"];
 
-  if (state.error.isError) {
-    return <Error message={state.error.message} />;
+  if (error.isError) {
+    return <Error message={error.message} />;
   }
 
-  if (state.isInitital) {
+  if (isInitial) {
     return <ResultCard>Search for users</ResultCard>;
   }
 
-  if (state.isLoading) {
+  if (isLoading) {
     return <ResultCard>Searching...</ResultCard>;
   }
 
-  if (state.users.length === 0) {
+  if (users.length === 0) {
     return <ResultCard>No users found</ResultCard>;
   }
 
@@ -35,19 +44,21 @@ const SerchResult: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {state.users.map((user, index) => {
-            return (
-              <tr key={index}>
-                {tableRow.map((row, i) => (
+          {users.map((user, index) => (
+            <tr key={index}>
+              {tableRow.map((row, i) =>
+                row === "interests" ? (
+                  <td key={i}>{user[row].join(", ")}</td>
+                ) : (
                   <td key={i}>{user[row]}</td>
-                ))}
-              </tr>
-            );
-          })}
+                )
+              )}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
 };
 
-export default SerchResult;
+export default SearchResult;

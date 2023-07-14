@@ -1,31 +1,78 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import FiltersBody from "../../Interfaces/FiltersBody";
 import ExactAge from "./ExactAge";
 import BetweenAge from "./BetweenAge";
-import { filtersActions } from "../../store/filter-slice";
 
-const AgeFilter: React.FC = () => {
-  const dispatch = useDispatch();
-  const ageMethod = useSelector(
-    (state: { filters: FiltersBody }) => state.filters.selectedAgeMethods
-  );
+type PropTypes = {
+  onRemoveFilter: (method: string) => void;
+  onSetExactAge: (value: string) => void;
+  onSetAgeFrom: (value: String) => void;
+  onSetAgeTo: (value: string) => void;
+  exactAge: number[];
+  ageFrom: number;
+  ageTo: number;
+};
+
+const AgeFilter: React.FC<PropTypes> = ({
+  onRemoveFilter,
+  onSetExactAge,
+  onSetAgeFrom,
+  onSetAgeTo,
+  exactAge,
+  ageFrom,
+  ageTo,
+}: PropTypes) => {
+  const [selectedAgeMethods, setselectedAgeMethods] = useState<string[]>([
+    "exact",
+  ]);
+
+  const ageMethodHandler = (method: string) => {
+    setselectedAgeMethods((prev) => {
+      if (prev.includes(method)) {
+        return prev.filter((item) => item !== method);
+      } else return [...prev, method];
+    });
+  };
+
+  const removeAgeMethodHandler = (method: string) => {
+    setselectedAgeMethods((prev) => {
+      return prev.filter((item) => item !== method);
+    });
+  };
 
   useEffect(() => {
-    if (ageMethod.length === 0) {
-      dispatch(filtersActions.removeFilter("age"));
-      dispatch(filtersActions.setSelectedAgeMethod("exact")); // default
+    if (selectedAgeMethods.length === 0) {
+      onRemoveFilter("age");
     }
-  }, [ageMethod, dispatch]);
+  }, [selectedAgeMethods, onRemoveFilter]);
 
   const renderFilters = () => {
-    return ageMethod.map((method, index) => {
+    return selectedAgeMethods.map((method, index) => {
       switch (method) {
         case "exact":
-          return <ExactAge key={index} />;
+          return (
+            <ExactAge
+              onChangeAgeMethod={ageMethodHandler}
+              onRemoveAgeMethod={removeAgeMethodHandler}
+              ageMethod={selectedAgeMethods}
+              onSetExactAge={onSetExactAge}
+              exactAge={exactAge}
+              key={index}
+            />
+          );
         case "between":
-          return <BetweenAge key={index} />;
+          return (
+            <BetweenAge
+              onChangeAgeMethod={ageMethodHandler}
+              onRemoveAgeMethod={removeAgeMethodHandler}
+              ageMethod={selectedAgeMethods}
+              onSetAgeFrom={onSetAgeFrom}
+              onSetAgeTo={onSetAgeTo}
+              ageFrom={ageFrom}
+              ageTo={ageTo}
+              key={index}
+            />
+          );
         default:
           return null;
       }

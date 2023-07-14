@@ -1,12 +1,12 @@
 import FilterCard from "../UI/FilterCard";
 
-type Prototype = {
+type PropTypes = {
   onHandleFilterChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   selectedFilters: string[];
-}
+};
 
-const FilterSelect: React.FC<Prototype> = (props: Prototype) => {
-  const filters = ["name", "interests", "birthdate", "age"];
+const FilterSelect: React.FC<PropTypes> = (props: PropTypes) => {
+  const filters = ["name", "interested", "birthday", "age"];
   return (
     <FilterCard>
       <label htmlFor="filter">Select Filter:</label>

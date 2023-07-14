@@ -1,16 +1,23 @@
-import { useDispatch } from "react-redux";
-import { filtersActions } from "../../store/filter-slice";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CheckboxItem from "./checkBoxItem";
 import FilterCard from "../UI/FilterCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const InterestedFilter: React.FC = () => {
-  const dispatch = useDispatch();
+type PropTypes = {
+  onRemoveFilter: (filter: string) => void;
+  onSetInterest: (value: string) => void;
+};
+
+const InterestedFilter: React.FC<PropTypes> = ({
+  onRemoveFilter,
+  onSetInterest,
+}: PropTypes) => {
   const interests = ["sport", "playstation", "movie", "book", "travel"];
+
   const handleInterestChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(filtersActions.setInterested(event.target.value));
+    const value = event.target.value;
+    onSetInterest(value);
   };
 
   return (
@@ -20,7 +27,7 @@ const InterestedFilter: React.FC = () => {
         <div
           className="ms-auto"
           onClick={() => {
-            dispatch(filtersActions.removeFilter("interests"));
+            onRemoveFilter("interested");
           }}
         >
           <FontAwesomeIcon icon={faTimes} />

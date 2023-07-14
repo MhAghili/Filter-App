@@ -1,4 +1,4 @@
-interface User {
+export interface User {
   name: string;
   birth_date: string;
   age: number;
@@ -6,20 +6,17 @@ interface User {
   [key: string]: any; // baraye estefade be soorat dynamic
 }
 
-interface FilterState {
+export type FilterState = {
   query: string;
   name: string;
   birthday: string;
-  excatAge: number[];
+  exactAge: number[];
+  interested: string[];
   ageFrom: string;
   ageTo: string;
-  intrested: string[];
-  selectedFilters: string[];
-  users: User[];
-  isLoading: boolean;
-  isInitital: boolean;
-  selectedAgeMethods: string[];
-  error: { isError: boolean; message: string };
-}
+};
 
-export default FilterState;
+export type FilterAction = {
+  type: string;
+  value: any;
+};
