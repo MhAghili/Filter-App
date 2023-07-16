@@ -15,7 +15,7 @@ type PropTypes = {
   name: string;
 };
 
-const AgeFilter = (props: PropTypes) => {
+const NumberFilter = (props: PropTypes) => {
   const [selectedItems, setselectedItems] = useState<string[]>([
     props.selectitems[0],
   ]);
@@ -82,4 +82,4 @@ const AgeFilter = (props: PropTypes) => {
   return <>{renderFilters()}</>;
 };
 
-export default AgeFilter;
+export default NumberFilter;

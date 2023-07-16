@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import StringFilter from "./StringFilter";
 import DateFilter from "./DateFilter";
 import ItemsFilters from "./ItemsFilter";
-import AgeFilter from "./Exact-Between-Number";
+import AgeFilter from "./Numbers";
 import Button from "../UI/Button";
 import FilterSelect from "./FilterSelect";
 import { initialFilterState, filterReducer } from "../../helpers/FilterReducer";
