@@ -1,4 +1,8 @@
-import { FilterState, FilterAction } from "../Interfaces/FiltersBody";
+import {
+  FilterState,
+  FilterAction,
+  ActionTypes,
+} from "../Interfaces/FiltersBody";
 import { format } from "date-fns";
 
 export const initialFilterState: FilterState = {
@@ -15,16 +19,16 @@ export const initialFilterState: FilterState = {
 
 export const filterReducer = (curState: FilterState, action: FilterAction) => {
   switch (action.type) {
-    case "name":
+    case ActionTypes.name:
       return { ...curState, name: action.value };
-    case "query":
+    case ActionTypes.query:
       return { ...curState, query: action.value };
-    case "birthday":
+    case ActionTypes.birthday:
       if (action.value === null) {
         return { ...curState, birthday: initialFilterState.birthday };
       } else
         return { ...curState, birthday: format(action.value!, "yyyy-MM-dd") };
-    case "interested":
+    case ActionTypes.interested:
       if (!action.value) {
         return {
           ...curState,
@@ -45,29 +49,29 @@ export const filterReducer = (curState: FilterState, action: FilterAction) => {
           };
         }
       }
-    case "clear":
+    case ActionTypes.clear:
       return {
         ...initialFilterState,
       };
-    case "ageExact":
+    case ActionTypes.ageExact:
       const age = action.value === "" ? [] : [action.value];
       return {
         ...curState,
         exactAge: age,
       };
 
-    case "ageFrom":
+    case ActionTypes.ageFrom:
       return {
         ...curState,
         ageFrom: action.value,
       };
-    case "ageTo":
+    case ActionTypes.ageTo:
       return {
         ...curState,
         ageTo: action.value,
       };
 
-    case "AddFilter":
+    case ActionTypes.AddFilter:
       if (action.value === "") {
         return {
           ...curState,
@@ -78,7 +82,7 @@ export const filterReducer = (curState: FilterState, action: FilterAction) => {
         ...curState,
         selectedFilter: [...curState.selectedFilter, action.value],
       };
-    case "RemoveFilter":
+    case ActionTypes.RemoveFilter:
       return {
         ...curState,
         selectedFilter: curState.selectedFilter.filter(

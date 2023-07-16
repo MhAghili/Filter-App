@@ -3,7 +3,7 @@ type PropTypes = {
   items: string;
 };
 
-const CheckBoxItem: React.FC<PropTypes> = (props: PropTypes) => {
+const CheckBoxItem = (props: PropTypes) => {
   return (
     <div className="form-check ">
       <input
