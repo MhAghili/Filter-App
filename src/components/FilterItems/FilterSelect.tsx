@@ -5,7 +5,7 @@ type PropTypes = {
   selectedFilters: string[];
 };
 
-const FilterSelect: React.FC<PropTypes> = (props: PropTypes) => {
+const FilterSelect = (props: PropTypes) => {
   const filters = ["name", "interested", "birthday", "age"];
   return (
     <FilterCard>

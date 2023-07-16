@@ -6,7 +6,8 @@ export interface User {
   [key: string]: any; // baraye estefade be soorat dynamic
 }
 
-export type FilterState = {
+export interface FilterState {
+  selectedFilter: string[];
   query: string;
   name: string;
   birthday: string;
@@ -14,9 +15,34 @@ export type FilterState = {
   interested: string[];
   ageFrom: string;
   ageTo: string;
-};
+  interestedList: string[];
+}
 
-export type FilterAction = {
-  type: string;
+export interface Body {
+  query: string;
+  filters: {
+    name: string;
+    birthdate: string;
+    exact_age: number[];
+    interests: string[];
+    range_age: number[];
+  };
+}
+
+export enum ActionTypes {
+  name = "name",
+  query = "query",
+  birthday = "birthday",
+  interested = "interested",
+  ageExact = "ageExact",
+  ageFrom = "ageFrom",
+  ageTo = "ageTo",
+  clear = "clear",
+  AddFilter = "AddFilter",
+  RemoveFilter = "RemoveFilter",
+}
+
+export interface FilterAction {
+  type: ActionTypes;
   value: any;
-};
+}

@@ -1,14 +1,15 @@
-import { useState, useReducer, useCallback } from "react";
+import { useReducer } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import StringFilter from "./StringFilter";
 import DateFilter from "./DateFilter";
-import InterestedFilter from "./InterestedFilter";
-import AgeFilter from "./AgeFilter";
+import ItemsFilters from "./ItemsFilter";
+import AgeFilter from "./Exact-Between-Number";
 import Button from "../UI/Button";
 import FilterSelect from "./FilterSelect";
 import { initialFilterState, filterReducer } from "../../helpers/FilterReducer";
-import { createBody } from "../../helpers/CreatBody";
-import { User } from "./../../Interfaces/FiltersBody";
+import { User, ActionTypes, FilterState } from "./../../Interfaces/FiltersBody";
+import apiCall from "../../searchService/Call-API-Handler";
+import QuerySearch from "./QuerySearch";
 
 type PropTypes = {
   onSetUser: (users: User[]) => void;
@@ -18,29 +19,40 @@ type PropTypes = {
   onClear: () => void;
 };
 
-const Filter: React.FC<PropTypes> = (props: PropTypes) => {
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-
+const Filters = (props: PropTypes) => {
   const [filters, dispatch] = useReducer(filterReducer, initialFilterState);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedFilters((prevState) => {
-      if (!prevState.includes(event.target.value)) {
-        return [...prevState, event.target.value];
-      } else return prevState;
-    });
+    dispatch({ type: ActionTypes.AddFilter, value: event.target.value });
   };
 
-  const removeFilter = useCallback((filter: string) => {
-    setSelectedFilters((prevState) => {
-      return prevState.filter((item) => item !== filter);
-    });
-    if (filter === "name") dispatch({ type: "name", value: "" });
-    if (filter === "birthday") dispatch({ type: "birthday", value: null });
+  const removeFilter = (filter: string) => {
+    dispatch({ type: ActionTypes.RemoveFilter, value: filter });
+    if (filter === "name") dispatch({ type: ActionTypes.name, value: "" });
+    if (filter === "birthday")
+      dispatch({ type: ActionTypes.birthday, value: null });
     if (filter === "interested") {
-      dispatch({ type: "interested", value: null });
+      dispatch({ type: ActionTypes.interested, value: null });
     }
-  }, []);
+  };
+
+  const createBody = (filters: FilterState) => {
+    const rangeAge =
+      filters.ageFrom !== "" && filters.ageTo !== ""
+        ? [+filters.ageFrom, +filters.ageTo]
+        : [];
+    const body = {
+      query: filters.query,
+      filters: {
+        exact_age: filters.exactAge,
+        range_age: rangeAge,
+        name: filters.name,
+        birthdate: filters.birthday,
+        interests: [...filters.interested],
+      },
+    };
+    return body;
+  };
 
   const searchBtnHandler = async () => {
     props.onSetIsInitial(false);
@@ -48,18 +60,7 @@ const Filter: React.FC<PropTypes> = (props: PropTypes) => {
     props.onSetError({ isError: false, message: "" });
     props.onSetIsLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/v1/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const users = await response.json();
+      const users = await apiCall(body);
       props.onSetIsLoading(false);
       props.onSetUser(users);
     } catch (err: any) {
@@ -69,22 +70,22 @@ const Filter: React.FC<PropTypes> = (props: PropTypes) => {
   };
 
   const clearBtnHandler = () => {
-    setSelectedFilters([]);
-    dispatch({ type: "clear", value: "" });
+    dispatch({ type: ActionTypes.AddFilter, value: "" });
+    dispatch({ type: ActionTypes.clear, value: "" });
     props.onClear();
   };
 
   const renderFilters = () => {
-    return selectedFilters.map((filter, index) => {
+    return filters.selectedFilter.map((filter) => {
       switch (filter) {
         case "name":
           return (
             <StringFilter
-              method="name"
+              filterName={filter}
               onRemoveFilter={removeFilter}
               key={filter}
               onSetString={(value) => {
-                dispatch({ type: "name", value: value });
+                dispatch({ type: ActionTypes.name, value: value });
               }}
               name={filters.name}
             />
@@ -92,41 +93,45 @@ const Filter: React.FC<PropTypes> = (props: PropTypes) => {
         case "birthday":
           return (
             <DateFilter
-              onRemoveFilter={removeFilter}
+              removeFilter={removeFilter}
               key={filter}
-              method="birthday"
               onSetDate={(value) => {
-                dispatch({ type: "birthday", value: value });
+                dispatch({ type: ActionTypes.birthday, value: value });
               }}
               date={filters.birthday}
+              name={filter}
             />
           );
         case "interested":
           return (
-            <InterestedFilter
+            <ItemsFilters
               onRemoveFilter={removeFilter}
               onSetInterest={(value) => {
-                dispatch({ type: "interested", value: value });
+                dispatch({ type: ActionTypes.interested, value: value });
               }}
+              items={filters.interestedList}
+              name={filter}
               key={filter}
             />
           );
         case "age":
           return (
             <AgeFilter
-              onRemoveFilter={removeFilter}
-              onSetExactAge={(value) => {
-                dispatch({ type: "ageExact", value: value });
+              removeFilter={removeFilter}
+              setExactNumber={(value) => {
+                dispatch({ type: ActionTypes.ageExact, value: value });
               }}
-              onSetAgeFrom={(value) => {
-                dispatch({ type: "ageFrom", value: value });
+              setFirstNumber={(value) => {
+                dispatch({ type: ActionTypes.ageFrom, value: value });
               }}
-              onSetAgeTo={(value) => {
-                dispatch({ type: "ageTo", value: value });
+              setSecondNumber={(value) => {
+                dispatch({ type: ActionTypes.ageTo, value: value });
               }}
-              exactAge={filters.exactAge}
-              ageFrom={filters.ageFrom}
-              ageTo={filters.ageTo}
+              exactNumber={filters.exactAge}
+              firstNumber={filters.ageFrom}
+              secondNumber={filters.ageTo}
+              selectitems={["exact", "between"]}
+              name={filter}
               key={filter}
             />
           );
@@ -138,18 +143,17 @@ const Filter: React.FC<PropTypes> = (props: PropTypes) => {
 
   return (
     <>
-      <StringFilter
-        method="Search"
-        onRemoveFilter={() => {}} //dummy function
-        onSetString={(value) => {
-          dispatch({ type: "query", value: value });
+      <QuerySearch
+        onSetValue={(value) => {
+          dispatch({ type: ActionTypes.query, value: value });
         }}
-        name={filters.query}
+        queryName={"Search"}
+        value={filters.query}
       />
       <div className="container">
         <FilterSelect
           onHandleFilterChange={handleFilterChange}
-          selectedFilters={selectedFilters}
+          selectedFilters={filters.selectedFilter}
         />
         {renderFilters()}
         <section className="mt-4">
@@ -165,4 +169,4 @@ const Filter: React.FC<PropTypes> = (props: PropTypes) => {
   );
 };
 
-export default Filter;
+export default Filters;

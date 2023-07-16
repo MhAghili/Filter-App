@@ -1,12 +1,12 @@
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Card from "./components/UI/Card";
-import Filter from "./components/FilterItems/Filters";
-import SerchResult from "./components/Results/SerchResult";
+import Filters from "./components/FilterItems/Filters";
+import SearchResult from "./components/Results/SearchResult";
 import { User } from "./Interfaces/FiltersBody";
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [users, setUsers] = useState<User[]>([]); //todo comment: in "users" niaze kollan? kollan age result nadsahtim begoo no result found
+  const [isLoading, setIsLoading] = useState(false); // manzooretoon az todo bala ro motevajeh nashodam
   const [isInitial, setisInitial] = useState(true);
   const [error, setError] = useState({ isError: false, message: "" });
 
@@ -16,7 +16,7 @@ function App() {
   const setIsLoadingHandler = (value: boolean) => {
     setIsLoading(value);
   };
-  const setisInitialHandler = (value: boolean) => {
+  const setIsInitialHandler = (value: boolean) => {
     setisInitial(value);
   };
   const setErrorHandler = (value: { isError: boolean; message: string }) => {
@@ -31,17 +31,20 @@ function App() {
 
   return (
     <Card>
-      <div className="p-2 bg-secondary-subtle rounded-3 h-100 overflow-auto ">
-        <Filter
+      <div
+        className="p-2 bg-secondary-subtle rounded-3 h-100 overflow-auto "
+        style={{ width: "300px" }}
+      >
+        <Filters
           onSetError={setErrorHandler}
-          onSetIsInitial={setisInitialHandler}
+          onSetIsInitial={setIsInitialHandler}
           onSetIsLoading={setIsLoadingHandler}
           onSetUser={setUserHandler}
           onClear={clear}
         />
       </div>
       <div className="p-2 h-100 w-100 text-center overflow-auto">
-        <SerchResult
+        <SearchResult
           error={error}
           isInitial={isInitial}
           isLoading={isLoading}

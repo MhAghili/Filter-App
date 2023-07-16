@@ -9,48 +9,44 @@ type PropTypes = {
   error: { isError: boolean; message: string };
 };
 
-const SearchResult: React.FC<PropTypes> = ({
-  users,
-  isLoading,
-  isInitial,
-  error,
-}) => {
-  const tableRow = ["name", "age", "interests", "birth_date"];
-
-  if (error.isError) {
-    return <Error message={error.message} />;
+const SearchResult = (props: PropTypes) => {
+  if (props.error.isError) {
+    return <Error message={props.error.message} />;
   }
 
-  if (isInitial) {
+  if (props.isInitial) {
     return <ResultCard>Search for users</ResultCard>;
   }
 
-  if (isLoading) {
+  if (props.isLoading) {
     return <ResultCard>Searching...</ResultCard>;
   }
 
-  if (users.length === 0) {
+  if (props.users.length === 0) {
     return <ResultCard>No users found</ResultCard>;
   }
+
+  const tableRow = Object.keys(props.users[0]);
+
 
   return (
     <div className="container mt-4">
       <table className="table table-striped">
         <thead>
           <tr>
-            {tableRow.map((name, index) => (
-              <th key={index}>{name}</th>
+            {tableRow.map((name) => (
+              <th key={name}>{name}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
-            <tr key={index}>
-              {tableRow.map((row, i) =>
-                row === "interests" ? (
-                  <td key={i}>{user[row].join(", ")}</td>
+          {props.users.map((user) => (
+            <tr key={user.name}>
+              {tableRow.map((row) =>
+                Array.isArray(user[row]) ? (
+                  <td key={row}>{user[row].join(", ")}</td>
                 ) : (
-                  <td key={i}>{user[row]}</td>
+                  <td key={row}>{user[row]}</td>
                 )
               )}
             </tr>

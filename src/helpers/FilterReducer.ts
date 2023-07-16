@@ -2,6 +2,7 @@ import { FilterState, FilterAction } from "../Interfaces/FiltersBody";
 import { format } from "date-fns";
 
 export const initialFilterState: FilterState = {
+  selectedFilter: [],
   query: "",
   name: "",
   birthday: "",
@@ -9,6 +10,7 @@ export const initialFilterState: FilterState = {
   interested: [],
   ageFrom: "",
   ageTo: "",
+  interestedList: ["sport", "playstation", "movie", "book", "travel"],
 };
 
 export const filterReducer = (curState: FilterState, action: FilterAction) => {
@@ -63,6 +65,25 @@ export const filterReducer = (curState: FilterState, action: FilterAction) => {
       return {
         ...curState,
         ageTo: action.value,
+      };
+
+    case "AddFilter":
+      if (action.value === "") {
+        return {
+          ...curState,
+          selectedFilter: initialFilterState.selectedFilter,
+        };
+      }
+      return {
+        ...curState,
+        selectedFilter: [...curState.selectedFilter, action.value],
+      };
+    case "RemoveFilter":
+      return {
+        ...curState,
+        selectedFilter: curState.selectedFilter.filter(
+          (item) => item !== action.value
+        ),
       };
 
     default:

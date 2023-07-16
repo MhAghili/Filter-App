@@ -4,7 +4,7 @@ type PropTypes = {
   btnHndlr: () => void;
 };
 
-const Button: React.FC<PropTypes> = (props: PropTypes) => {
+const Button = (props: PropTypes) => {
   return (
     <button
       className={`btn btn-primary ${props.classes}`}

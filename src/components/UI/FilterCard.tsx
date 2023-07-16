@@ -1,9 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const FilterCard: React.FC = ({ children }) => {
+type PropTypes = {
+  children: React.ReactNode;
+};
+
+
+const FilterCard= (props:PropTypes) => {
   return (
     <div className="form-group mt-4 border border-dark-subtle rounded-2 p-2">
-      {children}
+      {props.children}
     </div>
   );
 };

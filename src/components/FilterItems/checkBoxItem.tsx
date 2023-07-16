@@ -1,23 +1,22 @@
 type PropTypes = {
   onHandleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  intrestedItem: string;
+  items: string;
 };
 
-
-const checkBoxItem: React.FC<PropTypes> = (props: PropTypes) => {
+const CheckBoxItem: React.FC<PropTypes> = (props: PropTypes) => {
   return (
     <div className="form-check ">
       <input
         type="checkbox"
         className="form-check-input"
-        value={props.intrestedItem}
+        value={props.items}
         onChange={props.onHandleChange}
       />
-      <label className="form-check-label" htmlFor={props.intrestedItem}>
-        {props.intrestedItem}
+      <label className="form-check-label" htmlFor={props.items}>
+        {props.items}
       </label>
     </div>
   );
 };
 
-export default checkBoxItem;
+export default CheckBoxItem;

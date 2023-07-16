@@ -1,39 +1,30 @@
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import FilterCard from "../UI/FilterCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import RemoveFilter from "./RemoveFilter";
+import Input from "./Input";
 
 type PropTypes = {
   onRemoveFilter: (filter: string) => void;
-  method: string;
+  filterName: string;
   onSetString: (value: string) => void;
   name: string;
 };
 
-const StringFilter: React.FC<PropTypes> = (props: PropTypes) => {
-  const RemoveHandler = () => {
-    if (props.method === "name") {
-      props.onRemoveFilter(props.method);
-    } else return;
-  };
-
+const StringFilter = (props: PropTypes) => {
   return (
     <FilterCard>
-      <label className="d-flex" htmlFor={props.method}>
-        <p>{props.method === "name" ? "Name" : "Search"}</p>
-        {props.method === "name" && (
-          <div className="ms-auto" onClick={RemoveHandler}>
-            <FontAwesomeIcon icon={faTimes} />
-          </div>
-        )}
+      <label className="d-flex" htmlFor={props.filterName}>
+        <p>{props.filterName}</p>
+        <RemoveFilter
+          removeHandler={() => {
+            props.onRemoveFilter(props.filterName);
+          }}
+        />
       </label>
-      <input
-        onChange={(event) => {
-          props.onSetString(event.target.value);
-        }}
+      <Input
+        name=""
+        setValue={props.onSetString}
         type="text"
-        className="mb-3 topic form-control"
         value={props.name}
       />
     </FilterCard>
