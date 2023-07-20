@@ -147,7 +147,7 @@ const Filters = (props: PropTypes) => {
         onSetValue={(value) => {
           dispatch({ type: ActionTypes.query, value: value });
         }}
-        queryName={"Search"}
+        queryName="Search"
         value={filters.query}
       />
       <div className="container">

@@ -1,5 +1,7 @@
 import { Body } from "../Interfaces/FiltersBody";
 
+
+
 const apicall = async (body: Body) => {
   const response = await fetch("http://localhost:5000/api/v1/search", {
     method: "POST",
